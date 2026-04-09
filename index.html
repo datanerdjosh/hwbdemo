@@ -95,27 +95,23 @@
     </script>
     
     <script>
-      // Configure IBM watsonx Orchestrate
+      // Configure IBM watsonx Orchestrate - Working configuration from test
       window.wxOConfiguration = {
         orchestrationID: "e7b3ca7a7e434b0dad5e41e57d5faad9_f321551b-d128-4f43-93a0-ecdfd4f58ddf",
         hostURL: "https://us-south.watson-orchestrate.cloud.ibm.com",
         rootElementID: "root",
-        showLauncher: false,  // Hide the launcher button
-        openChatByDefault: true,  // Open chat window automatically
         deploymentPlatform: "ibmcloud",
         crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/e7b3ca7a7e434b0dad5e41e57d5faad9:f321551b-d128-4f43-93a0-ecdfd4f58ddf::",
         chatOptions: {
             agentId: "0a96da66-34f6-445f-b179-3c0f1d1bbda3",
             agentEnvironmentId: "c9e649a3-a409-48fd-b0eb-fd5c301a8513"
         },
-        layout: {
+    layout: {
             form: 'float',  // Floating chat window
             width: '800px',  // Increased from 400px for better readability
             height: '700px', // Increased from 600px for more content
-            showOrchestrateHeader: true,
-            isOpen: true  // Ensure chat opens by default
         },
-        style: {
+    style: {
             headerColor: '#1e3c72',
             userMessageBackgroundColor: '#2a5298',
             primaryColor: '#667eea',
