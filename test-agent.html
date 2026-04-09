@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Test - Minimal</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #debug { background: #f0f0f0; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>Testing watsonx Orchestrate Agent</h1>
+    <p>If the agent loads, you'll see the chat widget below.</p>
+    
+    <div id="debug">
+        <h3>Debug Info:</h3>
+        <div id="status">Initializing...</div>
+    </div>
+    
+    <!-- IBM watsonx Orchestrate Chat Widget -->
+    <div id="root"></div>
+    
+    <script>
+      const debugLog = (msg, type = 'info') => {
+        const status = document.getElementById('status');
+        const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+        status.innerHTML += `<div class="${className}">${new Date().toLocaleTimeString()}: ${msg}</div>`;
+        console.log(msg);
+      };
+      
+      // Log all console warnings and errors
+      const originalWarn = console.warn;
+      const originalError = console.error;
+      console.warn = function(...args) {
+        debugLog('⚠️ WARNING: ' + args.join(' '), 'warning');
+        originalWarn.apply(console, args);
+      };
+      console.error = function(...args) {
+        debugLog('❌ ERROR: ' + args.join(' '), 'error');
+        originalError.apply(console, args);
+      };
+      
+      debugLog('Starting agent initialization...');
+      
+      // Absolute minimal configuration - exactly as provided by IBM
+      window.wxOConfiguration = {
+        orchestrationID: "e7b3ca7a7e434b0dad5e41e57d5faad9_f321551b-d128-4f43-93a0-ecdfd4f58ddf",
+        hostURL: "https://us-south.watson-orchestrate.cloud.ibm.com",
+        rootElementID: "root",
+        deploymentPlatform: "ibmcloud",
+        crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/e7b3ca7a7e434b0dad5e41e57d5faad9:f321551b-d128-4f43-93a0-ecdfd4f58ddf::",
+        chatOptions: {
+            agentId: "0a96da66-34f6-445f-b179-3c0f1d1bbda3",
+            agentEnvironmentId: "c9e649a3-a409-48fd-b0eb-fd5c301a8513",
+        }
+      };
+      
+      debugLog('Configuration set, loading wxoLoader.js...');
+      
+      setTimeout(function () {
+        const script = document.createElement('script');
+        script.src = `${window.wxOConfiguration.hostURL}/wxochat/wxoLoader.js?embed=true`;
+        
+        script.addEventListener('load', function () {
+            debugLog('✅ wxoLoader.js loaded successfully', 'success');
+            debugLog('Initializing chat widget...');
+            try {
+              wxoLoader.init();
+              debugLog('✅ wxoLoader.init() called', 'success');
+            } catch (e) {
+              debugLog('❌ Error calling wxoLoader.init(): ' + e.message, 'error');
+            }
+        });
+        
+        script.addEventListener('error', function() {
+            debugLog('❌ Failed to load wxoLoader.js', 'error');
+        });
+        
+        document.head.appendChild(script);
+        debugLog('Script tag added to page');
+      }, 0);
+    </script>
+</body>
+</html>
