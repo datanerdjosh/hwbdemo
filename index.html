@@ -95,23 +95,6 @@
     </script>
     
     <script>
-      // Event handlers for chat customization
-      function onChatLoad(instance) {
-        console.log('Chat loaded successfully');
-        
-        // Handle authentication token refresh when needed
-        instance.on('authTokenNeeded', async function(event) {
-          console.log('Auth token needed, refreshing...');
-          // In production, you would fetch a new JWT from your server here
-          // For now, we'll use the API key directly
-          event.authToken = 'yqoK31DyOru1yIdlIi53Aqx2S6pU3Hy4CUaYmw5uKaAD';
-        });
-        
-        instance.on('chat:ready', function(event) {
-          console.log('Chat is ready for user interaction');
-        });
-      }
-      
       // Configure IBM watsonx Orchestrate
       window.wxOConfiguration = {
         orchestrationID: "e7b3ca7a7e434b0dad5e41e57d5faad9_f321551b-d128-4f43-93a0-ecdfd4f58ddf",
@@ -123,8 +106,7 @@
         crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/e7b3ca7a7e434b0dad5e41e57d5faad9:f321551b-d128-4f43-93a0-ecdfd4f58ddf::",
         chatOptions: {
             agentId: "0a96da66-34f6-445f-b179-3c0f1d1bbda3",
-            agentEnvironmentId: "c9e649a3-a409-48fd-b0eb-fd5c301a8513",
-            onLoad: onChatLoad
+            agentEnvironmentId: "c9e649a3-a409-48fd-b0eb-fd5c301a8513"
         },
         layout: {
             form: 'float',  // Floating chat window
