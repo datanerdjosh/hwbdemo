@@ -3,130 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hancock Whitney Employee Portal</title>
+    <title>Hancock Whitney - AI Banking Assistant</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <h1>🏦 Hancock Whitney Employee Portal</h1>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Hancock Whitney</h1>
+                    <span class="logo-subtitle">AI Banking Assistant</span>
+                </div>
+                <div class="user-info">
+                    <span class="welcome-text">Welcome, <span id="username-display"></span></span>
+                    <button id="logout-btn" class="logout-btn">Logout</button>
+                </div>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="#dashboard">Dashboard</a></li>
-                    <li><a href="#customers">Customers</a></li>
-                    <li><a href="#reports">Reports</a></li>
-                    <li><a href="#help">Help</a></li>
-                    <li><span id="userDisplay" class="user-display"></span></li>
-                    <li><button onclick="logout()" class="logout-btn">Logout</button></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
-    <main>
+    <!-- Main Content -->
+    <main class="main-content">
         <div class="container">
+            <!-- Welcome Section -->
             <section class="welcome-section">
-                <h2>Welcome to Your Employee Portal</h2>
-                <p>This website is for demo purposes only. Please click the chat in the bottom right corner to ask questions about policies and guidelines.</p>
+                <h2>Welcome to Your AI Banking Assistant</h2>
+                <p>Experience the future of banking with our intelligent AI assistant. Ask questions about your accounts, transactions, loans, or general banking services.</p>
             </section>
 
-            <section class="quick-actions">
-                <h3>Quick Actions</h3>
-                <div class="action-grid">
-                    <div class="action-card">
-                        <div class="icon">👤</div>
-                        <h4>Customer Lookup</h4>
-                        <p>Search and view customer accounts</p>
+            <!-- Demo Layout -->
+            <div class="demo-layout">
+                <!-- Sidebar with Quick Actions -->
+                <aside class="sidebar">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="sendQuickQuestion(this)">
+                            <span class="icon">💰</span>
+                            <span class="text">Check Account Balance</span>
+                        </button>
+                        <button class="action-btn" onclick="sendQuickQuestion(this)">
+                            <span class="icon">📊</span>
+                            <span class="text">Recent Transactions</span>
+                        </button>
+                        <button class="action-btn" onclick="sendQuickQuestion(this)">
+                            <span class="icon">💳</span>
+                            <span class="text">Credit Card Information</span>
+                        </button>
+                        <button class="action-btn" onclick="sendQuickQuestion(this)">
+                            <span class="icon">🏠</span>
+                            <span class="text">Mortgage Options</span>
+                        </button>
+                        <button class="action-btn" onclick="sendQuickQuestion(this)">
+                            <span class="icon">💵</span>
+                            <span class="text">Transfer Funds</span>
+                        </button>
+                        <button class="action-btn" onclick="sendQuickQuestion(this)">
+                            <span class="icon">📞</span>
+                            <span class="text">Contact Support</span>
+                        </button>
                     </div>
-                    <div class="action-card">
-                        <div class="icon">💳</div>
-                        <h4>Account Services</h4>
-                        <p>Manage accounts and transactions</p>
+
+                    <div class="info-box">
+                        <h4>About This Demo</h4>
+                        <p>This AI assistant is powered by watsonx Orchestrate and can help you with:</p>
+                        <ul>
+                            <li>Account inquiries</li>
+                            <li>Transaction history</li>
+                            <li>Product information</li>
+                            <li>General banking questions</li>
+                        </ul>
                     </div>
-                    <div class="action-card">
-                        <div class="icon">📊</div>
-                        <h4>Reports</h4>
-                        <p>Generate and view reports</p>
+                </aside>
+
+                <!-- AI Assistant Area -->
+                <section class="assistant-section">
+                    <div class="assistant-header">
+                        <h3>AI Banking Assistant</h3>
+                        <span class="status-indicator">
+                            <span class="status-dot"></span>
+                            Online
+                        </span>
                     </div>
-                    <div class="action-card">
-                        <div class="icon">🔒</div>
-                        <h4>Security</h4>
-                        <p>Fraud detection and alerts</p>
+
+                    <div class="assistant-container">
+                        <!-- watsonx Orchestrate Agent Embed Area -->
+                        <div id="root" class="agent-embed"></div>
+                        <script>
+                          // IBM Cloud API Key for authentication
+                          const IBM_CLOUD_API_KEY = 'vhNgmhcjb_l2RVDq21Oc5YklR5UnknqqTLTtj8nGH4Om';
+                          let cachedToken = null;
+                          let tokenExpiry = null;
+
+                          // Function to get IBM Cloud IAM token
+                          async function getIAMToken() {
+                            // Return cached token if still valid
+                            if (cachedToken && tokenExpiry && Date.now() < tokenExpiry) {
+                              return cachedToken;
+                            }
+
+                            try {
+                              const response = await fetch('https://iam.cloud.ibm.com/identity/token', {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/x-www-form-urlencoded',
+                                  'Accept': 'application/json'
+                                },
+                                body: `grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=${IBM_CLOUD_API_KEY}`
+                              });
+
+                              if (!response.ok) {
+                                throw new Error(`Failed to get IAM token: ${response.status}`);
+                              }
+
+                              const data = await response.json();
+                              cachedToken = data.access_token;
+                              // Token expires in 1 hour, refresh 5 minutes before
+                              tokenExpiry = Date.now() + (55 * 60 * 1000);
+                              
+                              console.log('IAM token obtained successfully');
+                              return cachedToken;
+                            } catch (error) {
+                              console.error('Error getting IAM token:', error);
+                              throw error;
+                            }
+                          }
+
+                          // watsonx Orchestrate Configuration
+                          window.wxOConfiguration = {
+                            orchestrationID: "2a59cd036d384b05ab508b8cb738c045_e1359556-e1cb-4f7f-84c1-1c6cf10b4c02",
+                            hostURL: "https://us-south.watson-orchestrate.cloud.ibm.com",
+                            rootElementID: "root",
+                            deploymentPlatform: "ibmcloud",
+                            crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/2a59cd036d384b05ab508b8cb738c045:e1359556-e1cb-4f7f-84c1-1c6cf10b4c02::",
+                            chatOptions: {
+                                agentId: "8eb02cab-fb86-497c-8794-af55f56e51d8",
+                                agentEnvironmentId: "6d50c947-b77b-4feb-9523-68a56cd77de5",
+                            },
+                            isAuthenticationEnabled: true,
+                            onAuthTokenNeeded: async function(event) {
+                              try {
+                                console.log('Auth token requested');
+                                const token = await getIAMToken();
+                                event.authToken = token;
+                                console.log('Auth token provided');
+                              } catch (error) {
+                                console.error('Failed to provide auth token:', error);
+                              }
+                            }
+                          };
+
+                          // Initialize the agent
+                          async function initializeAgent() {
+                            try {
+                              // Pre-fetch the token
+                              console.log('Pre-fetching IAM token...');
+                              await getIAMToken();
+                              
+                              // Load the wxoLoader script
+                              console.log('Loading wxoLoader script...');
+                              const script = document.createElement('script');
+                              script.src = `${window.wxOConfiguration.hostURL}/wxochat/wxoLoader.js?embed=true`;
+                              
+                              script.addEventListener('load', function () {
+                                console.log('wxoLoader script loaded, initializing...');
+                                wxoLoader.init();
+                              });
+                              
+                              script.addEventListener('error', function (e) {
+                                console.error('Error loading wxoLoader script:', e);
+                              });
+                              
+                              document.head.appendChild(script);
+                            } catch (error) {
+                              console.error('Error initializing agent:', error);
+                            }
+                          }
+
+                          // Start initialization after a short delay
+                          setTimeout(initializeAgent, 100);
+                        </script>
+                        <!-- End Agent Embed Area -->
+                    </div>
+
+                    <div class="assistant-footer">
+                        <p class="disclaimer">
+                            <strong>Demo Environment:</strong> This is a demonstration of AI capabilities. 
+                            Responses are for illustrative purposes only.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <h3>Why Choose Hancock Whitney's AI Assistant?</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h4>Instant Responses</h4>
+                        <p>Get immediate answers to your banking questions 24/7</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h4>Secure & Private</h4>
+                        <p>Your information is protected with bank-level security</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h4>Personalized Service</h4>
+                        <p>Tailored responses based on your banking needs</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌟</div>
+                        <h4>Always Learning</h4>
+                        <p>AI that improves with every interaction</p>
                     </div>
                 </div>
-            </section>
-
-            <section class="assistant-info">
-                <h3>Need Help?</h3>
-                <p>Click the chat icon in the bottom right corner to speak with our AI assistant. Get instant help with:</p>
-                <ul>
-                    <li>Policy Documents</li>
-                    <li>Guideline Documents</li>
-                </ul>
             </section>
         </div>
     </main>
 
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2024 Bank Employee Portal. All rights reserved.</p>
-            <p>For technical support, contact IT Help Desk</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Hancock Whitney Bank. All rights reserved.</p>
+                <p class="demo-notice">Demo Environment - For Authorized Users Only</p>
+            </div>
         </div>
     </footer>
 
-    <!-- IBM watsonx Orchestrate Chat Widget -->
-    <div id="root"></div>
-    
-    <!-- Authentication Script -->
-    <script src="auth.js"></script>
-    <script>
-      // Check authentication on page load
-      if (!checkAuth()) {
-        window.location.href = 'login.html';
-      }
-      
-      // Display logged-in user
-      const username = sessionStorage.getItem('username');
-      if (username) {
-        document.getElementById('userDisplay').textContent = `Welcome, ${username}`;
-      }
-    </script>
-    
-    <script>
-      // Configure IBM watsonx Orchestrate - Working configuration from test
-      window.wxOConfiguration = {
-        orchestrationID: "e7b3ca7a7e434b0dad5e41e57d5faad9_f321551b-d128-4f43-93a0-ecdfd4f58ddf",
-        hostURL: "https://us-south.watson-orchestrate.cloud.ibm.com",
-        rootElementID: "root",
-        deploymentPlatform: "ibmcloud",
-        crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/e7b3ca7a7e434b0dad5e41e57d5faad9:f321551b-d128-4f43-93a0-ecdfd4f58ddf::",
-        chatOptions: {
-            agentId: "0a96da66-34f6-445f-b179-3c0f1d1bbda3",
-            agentEnvironmentId: "c9e649a3-a409-48fd-b0eb-fd5c301a8513"
-        },
-    layout: {
-            form: 'float',  // Floating chat window
-            width: '800px',  // Increased from 400px for better readability
-            height: '700px', // Increased from 600px for more content
-        },
-    style: {
-            headerColor: '#1e3c72',
-            userMessageBackgroundColor: '#2a5298',
-            primaryColor: '#667eea',
-            showBackgroundGradient: true
-        }
-      };
-      
-      setTimeout(function () {
-        const script = document.createElement('script');
-        script.src = `${window.wxOConfiguration.hostURL}/wxochat/wxoLoader.js?embed=true`;
-        script.addEventListener('load', function () {
-            wxoLoader.init();
-        });
-        document.head.appendChild(script);
-      }, 0);
-    </script>
+    <script src="session.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
