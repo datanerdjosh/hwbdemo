@@ -64,6 +64,8 @@
                 <ul>
                     <li>Policy Documents</li>
                     <li>Guideline Documents</li>
+                    <li>ETL job documentation and data flow questions</li>
+                    <li>Sample prompt ideas you can copy during your chat session</li>
                 </ul>
             </section>
         </div>
@@ -75,6 +77,99 @@
             <p>For technical support, contact IT Help Desk</p>
         </div>
     </footer>
+
+    <div id="questionDrawerOverlay" class="question-drawer-overlay" aria-hidden="true"></div>
+
+    <button id="questionDrawerToggle" class="question-drawer-toggle" type="button" aria-expanded="false" aria-controls="questionDrawer">
+        Suggested Questions
+    </button>
+
+    <aside id="questionDrawer" class="question-drawer" aria-hidden="true">
+        <div class="question-drawer-header">
+            <div>
+                <p class="question-drawer-eyebrow">ETL Q&A Prompt Library</p>
+                <h2>Suggested Questions</h2>
+                <p>Browse categorized prompts and click any question to copy it before sending it to the ETL assistant.</p>
+            </div>
+            <button id="questionDrawerClose" class="question-drawer-close" type="button" aria-label="Close suggested questions panel">&times;</button>
+        </div>
+
+        <div id="questionCopyStatus" class="question-copy-status" aria-live="polite"></div>
+
+        <div class="question-drawer-body">
+            <details class="question-category">
+                <summary>Business User Questions</summary>
+                <div class="question-list">
+                    <button class="question-chip" type="button" data-question="What does BatchHouseholdMastery_12.18 do in plain English?">What does BatchHouseholdMastery_12.18 do in plain English?</button>
+                    <button class="question-chip" type="button" data-question="What business problem does PushClientToCMAWithSurvivorship_12.19 solve?">What business problem does PushClientToCMAWithSurvivorship_12.19 solve?</button>
+                    <button class="question-chip" type="button" data-question="Which ETL job handles archive or historical data?">Which ETL job handles archive or historical data?</button>
+                    <button class="question-chip" type="button" data-question="What does mastering mean in these ETL jobs?">What does mastering mean in these ETL jobs?</button>
+                    <button class="question-chip" type="button" data-question="Why are duplicate client or household records a problem?">Why are duplicate client or household records a problem?</button>
+                    <button class="question-chip" type="button" data-question="What teams would use the output of these ETL jobs?">What teams would use the output of these ETL jobs?</button>
+                </div>
+            </details>
+
+            <details class="question-category">
+                <summary>ETL Developer Questions</summary>
+                <div class="question-list">
+                    <button class="question-chip" type="button" data-question="What are the source components used by BatchHouseholdMastery_12.18?">What are the source components used by BatchHouseholdMastery_12.18?</button>
+                    <button class="question-chip" type="button" data-question="What are the three tMSSqlInput components doing in PushClientToCMAWithSurvivorship_12.19?">What are the three tMSSqlInput components doing in PushClientToCMAWithSurvivorship_12.19?</button>
+                    <button class="question-chip" type="button" data-question="Where is survivorship applied in BatchHouseholdMastery_12.18?">Where is survivorship applied in BatchHouseholdMastery_12.18?</button>
+                    <button class="question-chip" type="button" data-question="How is Batch_ID used in PushClientToCMAWithSurvivorship_12.19?">How is Batch_ID used in PushClientToCMAWithSurvivorship_12.19?</button>
+                    <button class="question-chip" type="button" data-question="Which jobs use hash staging or partitioning components?">Which jobs use hash staging or partitioning components?</button>
+                    <button class="question-chip" type="button" data-question="What SQL query is used in CDMHistoricalArchives_12.2 to find archive tables?">What SQL query is used in CDMHistoricalArchives_12.2 to find archive tables?</button>
+                </div>
+            </details>
+
+            <details class="question-category">
+                <summary>Job-Specific Questions</summary>
+                <div class="question-list">
+                    <button class="question-chip" type="button" data-question="How does BatchHouseholdMastery_12.18 combine STG.HOUSEHOLD_IN_PROCESS with dbo.HOUSEHOLD?">How does BatchHouseholdMastery_12.18 combine STG.HOUSEHOLD_IN_PROCESS with dbo.HOUSEHOLD?</button>
+                    <button class="question-chip" type="button" data-question="How is Mastery_Key derived in the household mastery job?">How is Mastery_Key derived in the household mastery job?</button>
+                    <button class="question-chip" type="button" data-question="How does CDMHistoricalArchives_12.2 derive SourceSchema from TargetSchema?">How does CDMHistoricalArchives_12.2 derive SourceSchema from TargetSchema?</button>
+                    <button class="question-chip" type="button" data-question="What does Survived_SF_Account mean in PushClientToCMAWithSurvivorship_12.19?">What does Survived_SF_Account mean in PushClientToCMAWithSurvivorship_12.19?</button>
+                    <button class="question-chip" type="button" data-question="What is the role of Match_Group_ID, Match_Group_Size, and Match_Group_Quality in the client survivorship job?">What is the role of Match_Group_ID, Match_Group_Size, and Match_Group_Quality in the client survivorship job?</button>
+                    <button class="question-chip" type="button" data-question="What target components are documented for each ETL job?">What target components are documented for each ETL job?</button>
+                </div>
+            </details>
+
+            <details class="question-category">
+                <summary>Cross-Job Comparison</summary>
+                <div class="question-list">
+                    <button class="question-chip" type="button" data-question="Which of the three ETL jobs is most focused on survivorship logic?">Which of the three ETL jobs is most focused on survivorship logic?</button>
+                    <button class="question-chip" type="button" data-question="Which jobs write to SQL Server targets?">Which jobs write to SQL Server targets?</button>
+                    <button class="question-chip" type="button" data-question="Which job has the most complete schema documentation?">Which job has the most complete schema documentation?</button>
+                    <button class="question-chip" type="button" data-question="Compare BatchHouseholdMastery_12.18 and PushClientToCMAWithSurvivorship_12.19.">Compare BatchHouseholdMastery_12.18 and PushClientToCMAWithSurvivorship_12.19.</button>
+                    <button class="question-chip" type="button" data-question="Which ETL job would be best to study for client mastering versus household mastering?">Which ETL job would be best to study for client mastering versus household mastering?</button>
+                    <button class="question-chip" type="button" data-question="Which ETL job would be best to study for archive discovery and schema normalization?">Which ETL job would be best to study for archive discovery and schema normalization?</button>
+                </div>
+            </details>
+
+            <details class="question-category">
+                <summary>Trust but Verify</summary>
+                <div class="question-list">
+                    <button class="question-chip" type="button" data-question="What facts in this job are directly documented versus inferred?">What facts in this job are directly documented versus inferred?</button>
+                    <button class="question-chip" type="button" data-question="Which parts of the README are supported by source metadata?">Which parts of the README are supported by source metadata?</button>
+                    <button class="question-chip" type="button" data-question="Are any business rules explicitly documented, or are they assumptions?">Are any business rules explicitly documented, or are they assumptions?</button>
+                    <button class="question-chip" type="button" data-question="Can you answer using only documented source metadata and avoid assumptions?">Can you answer using only documented source metadata and avoid assumptions?</button>
+                    <button class="question-chip" type="button" data-question="Which job documentation appears incomplete or contains placeholders?">Which job documentation appears incomplete or contains placeholders?</button>
+                    <button class="question-chip" type="button" data-question="What information is missing or not specified in the documentation?">What information is missing or not specified in the documentation?</button>
+                </div>
+            </details>
+
+            <details class="question-category">
+                <summary>Live Demo Starters</summary>
+                <div class="question-list">
+                    <button class="question-chip" type="button" data-question="List the ETL jobs available in the repository.">List the ETL jobs available in the repository.</button>
+                    <button class="question-chip" type="button" data-question="Summarize each ETL job in one paragraph.">Summarize each ETL job in one paragraph.</button>
+                    <button class="question-chip" type="button" data-question="Show me the data flow for PushClientToCMAWithSurvivorship_12.19.">Show me the data flow for PushClientToCMAWithSurvivorship_12.19.</button>
+                    <button class="question-chip" type="button" data-question="What are the documented source tables for BatchHouseholdMastery_12.18?">What are the documented source tables for BatchHouseholdMastery_12.18?</button>
+                    <button class="question-chip" type="button" data-question="How does CDMHistoricalArchives_12.2 identify archive tables?">How does CDMHistoricalArchives_12.2 identify archive tables?</button>
+                    <button class="question-chip" type="button" data-question="Answer only with facts explicitly supported by the documentation.">Answer only with facts explicitly supported by the documentation.</button>
+                </div>
+            </details>
+        </div>
+    </aside>
 
     <!-- IBM watsonx Orchestrate Chat Widget -->
     <div id="root"></div>
@@ -96,19 +191,19 @@
     
     <script>
       // Configure IBM watsonx Orchestrate - Working configuration from test
-      window.wxOConfiguration = {
-        orchestrationID: "2a59cd036d384b05ab508b8cb738c045_e1359556-e1cb-4f7f-84c1-1c6cf10b4c02",
-        hostURL: "https://us-south.watson-orchestrate.cloud.ibm.com",
-        rootElementID: "root",
-        deploymentPlatform: "ibmcloud",
-        crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/2a59cd036d384b05ab508b8cb738c045:e1359556-e1cb-4f7f-84c1-1c6cf10b4c02::",
-        chatOptions: {
-            agentId: "8eb02cab-fb86-497c-8794-af55f56e51d8",
-            agentEnvironmentId: "6d50c947-b77b-4feb-9523-68a56cd77de5"
+    window.wxOConfiguration = {
+    orchestrationID: "5f123135c422464fb6f358d8900318bd_0a7008b6-ffc5-4984-8e34-bb5ac11b014e",
+    hostURL: "https://us-south.watson-orchestrate.cloud.ibm.com",
+    rootElementID: "root",
+    deploymentPlatform: "ibmcloud",
+    crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/5f123135c422464fb6f358d8900318bd:0a7008b6-ffc5-4984-8e34-bb5ac11b014e::",
+    chatOptions: {
+        agentId: "12fb085f-1a54-4ede-8155-b52aa33a8c79", 
+        agentEnvironmentId: "9cfc609a-0952-41e0-8956-4259e3dd8b6c",
         },
     layout: {
             form: 'float',  // Floating chat window
-            width: '800px',  // Increased from 400px for better readability
+            width: '1000px',  // Increased from 400px for better readability
             height: '700px', // Increased from 600px for more content
         },
     style: {
@@ -119,6 +214,56 @@
         }
       };
       
+      const questionDrawer = document.getElementById('questionDrawer');
+      const questionDrawerToggle = document.getElementById('questionDrawerToggle');
+      const questionDrawerClose = document.getElementById('questionDrawerClose');
+      const questionDrawerOverlay = document.getElementById('questionDrawerOverlay');
+      const questionCopyStatus = document.getElementById('questionCopyStatus');
+
+      function setQuestionDrawerState(isOpen) {
+        questionDrawer.classList.toggle('open', isOpen);
+        questionDrawerOverlay.classList.toggle('visible', isOpen);
+        questionDrawer.setAttribute('aria-hidden', String(!isOpen));
+        questionDrawerOverlay.setAttribute('aria-hidden', String(!isOpen));
+        questionDrawerToggle.setAttribute('aria-expanded', String(isOpen));
+      }
+
+      questionDrawerToggle.addEventListener('click', function () {
+        const isOpen = !questionDrawer.classList.contains('open');
+        setQuestionDrawerState(isOpen);
+      });
+
+      questionDrawerClose.addEventListener('click', function () {
+        setQuestionDrawerState(false);
+      });
+
+      questionDrawerOverlay.addEventListener('click', function () {
+        setQuestionDrawerState(false);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && questionDrawer.classList.contains('open')) {
+          setQuestionDrawerState(false);
+        }
+      });
+
+      document.querySelectorAll('.question-chip').forEach(function (button) {
+        button.addEventListener('click', async function () {
+          const question = button.getAttribute('data-question') || button.textContent.trim();
+
+          try {
+            await navigator.clipboard.writeText(question);
+            questionCopyStatus.textContent = 'Copied prompt to clipboard.';
+            button.classList.add('copied');
+            setTimeout(function () {
+              button.classList.remove('copied');
+            }, 1200);
+          } catch (error) {
+            questionCopyStatus.textContent = 'Unable to copy automatically. Please copy the text manually.';
+          }
+        });
+      });
+
       setTimeout(function () {
         const script = document.createElement('script');
         script.src = `${window.wxOConfiguration.hostURL}/wxochat/wxoLoader.js?embed=true`;
